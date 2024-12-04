@@ -3,9 +3,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": [
-      "node"
-    ]
+    "types": ["node"],
+    "typeRoots": ["node_modules/@types", "src"] // Ajout ici pour inclure le fichier dans src
   },
   "files": [
     "src/main.ts",

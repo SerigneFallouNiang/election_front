@@ -1,0 +1,10 @@
+.senegal-directory .bg-gradient-to-r {
+    background-image: linear-gradient(
+      to right, 
+      #00853D,  /* Vert du drapeau sénégalais */
+      #FDEF42,  /* Jaune du drapeau sénégalais */
+      #BC0000   /* Rouge du drapeau sénégalais */
+    );
+  }
+  
+  /* Autres styles identiques au précédent fichier CSS */

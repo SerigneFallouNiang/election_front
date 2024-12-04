@@ -1,0 +1,93 @@
+<div class="senegal-directory min-h-screen bg-gray-50 p-6">
+  <div class="container mx-auto">
+    <!-- Header with Senegalese flag colors -->
+    <header class="bg-gradient-to-r from-green-600 via-yellow-500 to-red-600 text-white p-6 rounded-t-lg shadow-md">
+      <h1 class="text-3xl font-bold text-center">
+        Répertoire des Jeunes du Sénégal
+      </h1>
+    </header>
+
+    <div class="bg-white shadow-lg rounded-b-lg p-6">
+      <!-- Search and Filter Section -->
+      <div class="flex flex-col md:flex-row gap-4 mb-6">
+        <!-- Search Input -->
+        <div class="relative flex-grow">
+          <input 
+            type="text" 
+            [(ngModel)]="searchTerm"
+            placeholder="Rechercher par nom ou prénom"
+            class="w-full p-3 pl-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
+        </div>
+
+        <!-- Department Dropdown -->
+        <!-- <select 
+          [(ngModel)]="selectedDepartment"
+          (ngModelChange)="filterYoungs()"
+          class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
+          <option value="">Tous les départements</option>
+          <option *ngFor="let dept of departments" [value]="dept">{{dept}}</option>
+        </select> -->
+        <!-- Department Dropdown -->
+<select 
+[(ngModel)]="selectedDepartment"
+class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+>
+<option value="">Tous les départements</option>
+<option *ngFor="let dept of departments" [value]="dept">{{ dept }}</option>
+</select>
+
+<!-- Commune Dropdown -->
+<select 
+[(ngModel)]="selectedCommune"
+class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+>
+<option value="">Toutes les communes</option>
+<option *ngFor="let commune of communes" [value]="commune">{{ commune }}</option>
+</select>
+
+        <!-- Commune Dropdown -->
+        <!-- <select 
+          [(ngModel)]="selectedCommune"
+          (ngModelChange)="filterYoungs()"
+          class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
+          <option value="">Toutes les communes</option>
+          <option *ngFor="let commune of communes" [value]="commune">{{commune}}</option>
+        </select> -->
+      </div>
+
+      <!-- Results Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div 
+          *ngFor="let young of filteredYoungs" 
+          class="bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow p-6"
+        >
+          <h3 class="text-xl font-semibold text-green-800 mb-4">
+            {{ young.first_name }} {{ young.last_name }}
+          </h3>
+
+          <div *ngIf="young.address" class="mb-4">
+            <p class="font-medium text-yellow-700">Adresse:</p>
+            <p class="text-gray-600">Département: {{ young.address.department }}</p>
+            <p class="text-gray-600">Commune: {{ young.address.commune }}</p>
+          </div>
+
+          <div *ngIf="young.documents && young.documents.length > 0">
+            <p class="font-medium text-red-700">Documents:</p>
+            <ul class="list-disc list-inside text-gray-700">
+              <li *ngFor="let doc of young.documents">{{ doc }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Results Message -->
+      <div *ngIf="filteredYoungs.length === 0" class="text-center text-gray-500 p-6">
+        Aucun résultat trouvé
+      </div>
+    </div>
+  </div>
+</div>
