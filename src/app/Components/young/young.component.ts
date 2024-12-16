@@ -1,50 +1,102 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { YoungService } from '../../Services/young.service';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-// import galsenify from 'galsenify';
-
+import galsenify from 'galsenify';
 
 
 
 @Component({
   selector: 'app-young',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, ReactiveFormsModule],
   templateUrl: './young.component.html',
   styleUrl: './young.component.css'
 })
 export class YoungComponent implements OnInit {
   private youngService = inject(YoungService);
   
-  youngs: any[] = [];
-  filteredYoungs: any[] = [];
+ // Déclaration des propriétés
+youngs: any[] = [];
+filteredYoungs: any[] = [];
+filtered: FormGroup;
+
+ // Listes uniques pour les filtres
+ regions: string[] = [];
+ departements: string[] = [];
+ communes: string[] = [];
+
+constructor(private fb: FormBuilder) {
+  // Initialisation du formulaire avec des contrôles imbriqués
+  this.filtered = this.fb.group({
+    region: [''],
+    department: [''],
+    commune: ['']
+  });
+}
   
-  // Filtres
-  searchTerm: string = '';
-  selectedDepartment: string = '';
-  selectedCommune: string = '';
 
-  // Listes uniques pour les filtres
-  departments: string[] = [];
-  communes: string[] = [];
+ 
 
-  galsenify = require("galsenify");
 
   ngOnInit(): void {
     this.fetchYoung();
-    this.initializeFilters();
+    this.chargerRegions();
+
+    // Écouter les changements de formulaire pour filtrer dynamiquement
+    this.filtered.valueChanges.subscribe(() => {
+      this.filterYoungs();
+    });
+
   }
 
+  chargerRegions() {
+    this.regions = galsenify.regions() || [];
+    console.log('Loaded Regions:', this.regions);
 
-  initializeFilters() {
-  // Charger les départements via Galsenif
-  this.departments = this.galsenify.departments(); 
+  }
+
+  onChangementRegion() {
+    const selectedRegion = this.filtered.get('region')?.value;
+    if (selectedRegion) {
+      console.log('Selected Region:', selectedRegion);
+      try {
+        this.departements = galsenify.departments(selectedRegion) || [];
+        console.log('Departments for ' + selectedRegion + ':', this.departements);
+      } catch (error) {
+        console.error('Error fetching departments:', error);
+      }
+      this.communes = []; 
+      this.filtered.get('department')?.reset(); 
+      this.filtered.get('commune')?.reset(); 
+    }
+  }
+
+  //selection de département
+  onChangementDepartement() {
+    const selectedDepartement = this.filtered.get('department')?.value;
   
-  // Charger les communes via Galsenify (optionnel, selon vos besoins)
-  this.communes = this.galsenify.sn().communes; 
-}
+    if (selectedDepartement) {
+      this.communes = galsenify.communes(selectedDepartement) || [];
+      this.filtered.get('commune')?.reset(); // Réinitialiser la commune
+    }
+
+    this.filterYoungs(); // Mettre à jour le filtre
+
+  }
+
+  filterYoungs() {
+    const { region, department, commune } = this.filtered.value;
+
+    this.filteredYoungs = this.youngs.filter(young => {
+      const matchesRegion = !region || (young.address && young.address.region === region);
+      const matchesDepartment = !department || (young.address && young.address.department === department);
+      const matchesCommune = !commune || (young.address && young.address.commune === commune);
+      return matchesRegion && matchesDepartment && matchesCommune;
+    });
+  }
+
 
   fetchYoung() {
     this.youngService.getAllYoungs().subscribe(
@@ -58,5 +110,21 @@ export class YoungComponent implements OnInit {
       }
     );
   }
+
+  // onChangementRegion() {
+  //   const selectedRegion = value;
+  //   if (selectedRegion) {
+  //     console.log('Selected Region:', selectedRegion);
+  //     try {
+  //       this.departements = galsenify.departments(selectedRegion) || [];
+  //       console.log('Departments for ' + selectedRegion + ':', this.departements);
+  //     } catch (error) {
+  //       console.error('Error fetching departments:', error);
+  //     }
+  //     this.communes = []; 
+  //     this.filtered.get('department')?.reset(); 
+  //     this.filtered.get('commune')?.reset(); 
+  //   }
+  // }
   
 }
