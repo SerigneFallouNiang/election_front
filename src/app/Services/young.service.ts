@@ -16,6 +16,8 @@ export class YoungService {
 
 
 addYoung(youngData: FormData) {
+  console.log('........................................................;',youngData);
+  
   return this.http.post(`${apiUrl}/young`, youngData);
 }
 

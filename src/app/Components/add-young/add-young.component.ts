@@ -8,12 +8,11 @@ import { YoungService } from '../../Services/young.service';
 @Component({
   selector: 'app-add-young',
   standalone: true,
-  imports: [CommonModule,FormsModule,ReactiveFormsModule,],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './add-young.component.html',
   styleUrl: './add-young.component.css'
 })
-export class AddYoungComponent  implements OnInit{
-
+export class AddYoungComponent implements OnInit {
   private youngService = inject(YoungService);
 
   formJeune: FormGroup;
@@ -21,8 +20,6 @@ export class AddYoungComponent  implements OnInit{
   departements: string[] = [];
   communes: string[] = [];
   fichiersSelectionnes: File[] = [];
-  // galsenify = require("galsenify");
-
 
   constructor(
     private fb: FormBuilder,
@@ -48,86 +45,80 @@ export class AddYoungComponent  implements OnInit{
 
   ngOnInit() {
     this.chargerRegions();
-    // get all Senegal's regions
-console.log(galsenify.regions());
-console.log(galsenify.departments("Dakar"));
-console.log('Regions:', this.regions);
   }
 
   chargerRegions() {
     this.regions = galsenify.regions() || [];
-    console.log('Loaded Regions:', this.regions);
-
   }
-
-  // onChangementRegion(region: string) {
-  //   this.departements = this.galsenify.departments(region) || [];
-  //   this.formJeune.get('address.department')?.reset();
-  //   this.formJeune.get('address.commune')?.reset();
-  // }
 
   onChangementRegion() {
     const selectedRegion = this.formJeune.get('address.region')?.value;
     if (selectedRegion) {
-      console.log('Selected Region:', selectedRegion);
-      try {
-        this.departements = galsenify.departments(selectedRegion) || [];
-        console.log('Departments for ' + selectedRegion + ':', this.departements);
-      } catch (error) {
-        console.error('Error fetching departments:', error);
-      }
+      this.departements = galsenify.departments(selectedRegion) || [];
       this.communes = []; 
-      this.formJeune.get('address.department')?.reset(); 
-      this.formJeune.get('address.commune')?.reset(); 
+      this.formJeune.get('address.department')?.reset();
+      this.formJeune.get('address.commune')?.reset();
     }
   }
-  
-  
-//selection de département
+
   onChangementDepartement() {
     const selectedDepartement = this.formJeune.get('address.department')?.value;
-  
     if (selectedDepartement) {
       this.communes = galsenify.communes(selectedDepartement) || [];
-      this.formJeune.get('address.commune')?.reset(); // Réinitialiser la commune
+      this.formJeune.get('address.commune')?.reset();
     }
   }
-  
-  
 
   onSelectionFichiers(event: any) {
-    this.fichiersSelectionnes = Array.from(event.target.files);
-  }
-
-
-  // //pour soumettre les données
-  onSoumettre() {
-    if (this.formJeune.valid) {
-      // Utiliser un objet JSON standard au lieu de FormData
-      const formData = this.formJeune.value;
-  
-      // Convertir le booléen pour is_elector
-      formData.is_elector = formData.is_elector ? true : false;
-  
-      // Formater la date de naissance
-      formData.birth_date = this.formatDateToISO(formData.birth_date);
-  
-      this.youngService.addYoung(formData)
-        .subscribe({
-          next: (reponse) => {
-            console.log('Jeune ajouté avec succès', reponse);
-            this.formJeune.reset();
-          },
-          error: (erreur) => {
-            console.error('Détails de l\'erreur:', erreur.error);
-          }
-        });
+    const files = event.target.files;
+    if (files) {
+      this.fichiersSelectionnes = Array.from(files);
     }
   }
-  
-  // Méthode pour formater la date
+
+  onSoumettre() {
+    if (this.formJeune.valid) {
+      const formData = new FormData();
+      
+      // Ajouter les champs du formulaire
+      const rawFormData = this.formJeune.value;
+      Object.keys(rawFormData).forEach(key => {
+        if (key !== 'documents' && key !== 'address') {
+          formData.append(key, rawFormData[key]);
+        }
+      });
+
+      // Ajouter l'adresse
+      formData.append('address[region]', rawFormData.address.region);
+      formData.append('address[department]', rawFormData.address.department);
+      formData.append('address[commune]', rawFormData.address.commune);
+      formData.append('address[quartier]', rawFormData.address.quartier);
+
+      // Ajouter les documents
+      this.fichiersSelectionnes.forEach((file, index) => {
+        formData.append(`documents[]`, file);
+      });
+
+      // Convertir les valeurs booléennes et dates
+      formData.set('is_elector', rawFormData.is_elector ? '1' : '0');
+      formData.set('birth_date', this.formatDateToISO(rawFormData.birth_date));
+
+      // Envoyer les données
+      this.youngService.addYoung(formData).subscribe({
+        next: (reponse) => {
+          console.log('Jeune ajouté avec succès', reponse);
+          this.formJeune.reset();
+          this.fichiersSelectionnes = [];
+        },
+        error: (erreur) => {
+          console.error('Détails de l\'erreur:', erreur.error);
+        }
+      });
+    }
+  }
+
   formatDateToISO(dateString: string): string {
     const date = new Date(dateString);
-    return date.toISOString().split('T')[0]; // Format YYYY-MM-DD
+    return date.toISOString().split('T')[0];
   }
 }

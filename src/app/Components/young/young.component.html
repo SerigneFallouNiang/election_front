@@ -1,79 +1,4 @@
-<!-- <div class="senegal-directory min-h-screen bg-gray-50 p-6">
-  <div class="container mx-auto">
-  
-    <header class="bg-gradient-to-r from-green-600 via-yellow-500 to-red-600 text-white p-6 rounded-t-lg shadow-md">
-      <h1 class="text-3xl font-bold text-center">
-        Répertoire des Jeunes du Sénégal
-      </h1>
-    </header>
 
-    <div class="bg-white shadow-lg rounded-b-lg p-6">
-  
-      <div class="flex flex-col md:flex-row gap-4 mb-6">
-      
-        <div class="relative flex-grow">
-          <input 
-            type="text" 
-            [(ngModel)]="searchTerm"
-            placeholder="Rechercher par nom ou prénom"
-            class="w-full p-3 pl-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-          <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
-        </div>
-
-       
-<select 
-[(ngModel)]="selectedDepartment"
-class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
->
-<option value="">Tous les départements</option>
-<option *ngFor="let dept of departments" [value]="dept">{{ dept }}</option>
-</select>
-
-<select 
-[(ngModel)]="selectedCommune"
-class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
->
-<option value="">Toutes les communes</option>
-<option *ngFor="let commune of communes" [value]="commune">{{ commune }}</option>
-</select>
-
-
-      </div>
-
- 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div 
-          *ngFor="let young of filteredYoungs" 
-          class="bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow p-6"
-        >
-          <h3 class="text-xl font-semibold text-green-800 mb-4">
-            {{ young.first_name }} {{ young.last_name }}
-          </h3>
-
-          <div *ngIf="young.address" class="mb-4">
-            <p class="font-medium text-yellow-700">Adresse:</p>
-            <p class="text-gray-600">Département: {{ young.address.department }}</p>
-            <p class="text-gray-600">Commune: {{ young.address.commune }}</p>
-          </div>
-
-          <div *ngIf="young.documents && young.documents.length > 0">
-            <p class="font-medium text-red-700">Documents:</p>
-            <ul class="list-disc list-inside text-gray-700">
-              <li *ngFor="let doc of young.documents">{{ doc }}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-   
-      <div *ngIf="filteredYoungs.length === 0" class="text-center text-gray-500 p-6">
-        Aucun résultat trouvé
-      </div>
-    </div>
-  </div>
-</div>
- -->
 <section class="all flex">
   <div class="side-bar h-full fixed top-0 left-0 w-64">
     <!-- <div class="logo"> -->
@@ -92,7 +17,7 @@ class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-50
         </div>
 
         <div class="compt-user items-center flex m-2 ">
-          <img class="profil mr-4" src="profil" alt="">
+          <!-- <img class="profil mr-4" src="profil" alt=""> -->
           <h2 class="name-user text-slate-950 items-cente text-base text-gray-700">Serigne Fallou <br> <span class="text-gray-400 text-xs">admin</span></h2>
          </div>
     </div>
@@ -114,10 +39,10 @@ class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-50
     </div>
 
      <!-- Boutons à droite -->
-    <div class="down-add flex items-center gap-4">
+    <!-- <div class="down-add flex items-center gap-4">
       <div class="card-down bg-amber-200"><i class="fa-solid fa-file-export" style="color: #63E6BE;"></i>Export fichier</div>
       <div class="card-down bg-lime-200"><i class="fa-solid fa-user-plus" style="color: #FFD43B;"></i>Ajouter</div>
-    </div>
+    </div> -->
 
 
     </div>
@@ -168,7 +93,7 @@ class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-50
           {{region}}
         </option>
       </select> -->
-      <form [formGroup]="filtered">
+      <form [formGroup]="filtered" class=" items-center justify-stretch">
 
       <select 
       formControlName="region" 
@@ -201,7 +126,10 @@ class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-50
         <input class="input-inset h-10 pr-10" type="text" placeholder="Rechercher" />
       </div>
       <div class="filter h-10 w-10 bg-slate-200 rounded-lg flex items-center justify-center transition-colors duration-300 hover:bg-slate-300 cursor-pointer">
-        <i class="fa-solid fa-filter text-slate-600 text-lg"></i>
+        <i class="fa-solid fa-file-export" style="color: #a1a1aa;"></i>
+      </div>
+      <div class="filter h-10 w-10 bg-slate-200 rounded-lg flex items-center justify-center transition-colors duration-300 hover:bg-slate-300 cursor-pointer">
+       <a routerLink="/add-young" > <i class="fa-solid fa-user-plus " style="color: #a1a1aa;" ></i></a>
       </div>
     </div>
   </div>
@@ -215,12 +143,12 @@ class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-50
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-                <th scope="col" class="p-4">
+                <!-- <th scope="col" class="p-4">
                     <div class="flex items-center">
                         <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         <label for="checkbox-all-search" class="sr-only">checkbox</label>
                     </div>
-                </th>
+                </th> -->
                 <th scope="col" class="px-6 py-3">
                     Nom
                 </th>
@@ -241,22 +169,22 @@ class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-50
         <tbody>
          
           
-            <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600" *ngFor="let young of filteredYoungs" >
-                <td class="w-4 p-4">
+            <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600"  *ngFor="let young of paginatedYoungs" >
+                <!-- <td class="w-4 p-4">
                     <div class="flex items-center">
                         <input id="checkbox-table-search-3" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         <label for="checkbox-table-search-3" class="sr-only">checkbox</label>
                     </div>
-                </td>
+                </td> -->
                 <th scope="row" class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <img class="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-4.jpg" alt="Jese image">
+                    <!-- <img class="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-4.jpg" alt="Jese image"> -->
                     <div class="ps-3">
                         <div class="text-base font-semibold">{{ young.first_name }} {{ young.last_name }}</div>
                         <div class="font-normal text-gray-500">NCI:{{ young.id_card_number }}</div>
                     </div>
                 </th>
                 <td class="px-6 py-4">
-                  {{ young.id_card_number }}
+                  {{ young.phone }}
                 </td>
                 <td class="px-6 py-4" *ngIf="young.address">
                   {{ young.address.region }}, {{ young.address.department }}, {{ young.address.commune }}
@@ -267,12 +195,90 @@ class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-50
                     </div>
                 </td>
                 <td class="px-6 py-4">
-                    <!-- Modal toggle -->
-                    <a href="#" type="button" data-modal-show="editUserModal" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"><i class="fa-solid fa-eye"></i></a>
-                </td>
+
+                    <a *ngIf="young.documents; else noDocument" type="button" [href]="young.documents" target="_blank"  class="font-medium text-blue-600 dark:text-blue-500 hover:underline"><i class="fa-solid fa-eye" style="color: #a1a1aa;" ></i></a>
+                
+                    <ng-template #noDocument>
+                      <div class="text-center p-3">Pas encore de document</div>
+                    </ng-template>
+
+                 </td>
             </tr>
         </tbody>
     </table>
+<!-- Add this right after your table -->
+<div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+  <div class="flex flex-1 justify-between sm:hidden">
+    <button
+      [disabled]="currentPage === 1"
+      (click)="changePage(currentPage - 1)"
+      class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+      [class.opacity-50]="currentPage === 1"
+    >
+      Previous
+    </button>
+    <button
+      [disabled]="currentPage === totalPages"
+      (click)="changePage(currentPage + 1)"
+      class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+      [class.opacity-50]="currentPage === totalPages"
+    >
+      Next
+    </button>
+  </div>
+  <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+    <div>
+      <p class="text-sm text-gray-700">
+        Affichage
+        <span class="font-medium">{{ (currentPage - 1) * pageSize + 1 }}</span>
+        à
+        <span class="font-medium">{{ Math.min(currentPage * pageSize, totalItems) }}</span>
+        sur
+        <span class="font-medium">{{ totalItems }}</span>
+        résultats
+      </p>
+    </div>
+    <div>
+      <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+        <button
+          [disabled]="currentPage === 1"
+          (click)="changePage(currentPage - 1)"
+          class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+          [class.opacity-50]="currentPage === 1"
+        >
+          <span class="sr-only">Previous</span>
+          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+          </svg>
+        </button>
+        <ng-container *ngFor="let page of pages">
+          <button
+            (click)="changePage(page)"
+            [class.bg-indigo-600]="page === currentPage"
+            [class.text-white]="page === currentPage"
+            class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+          >
+            {{ page }}
+          </button>
+        </ng-container>
+        <button
+          [disabled]="currentPage === totalPages"
+          (click)="changePage(currentPage + 1)"
+          class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+          [class.opacity-50]="currentPage === totalPages"
+        >
+          <span class="sr-only">Next</span>
+          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </div>
+</div>
+
+  
+
     <!-- Edit user modal -->
     <div id="editUserModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 items-center justify-center hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative w-full max-w-2xl max-h-full">
@@ -283,51 +289,8 @@ class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-50
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                         Edit user
                     </h3>
-                   <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="editUserModal">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
                 </div>
-                <!-- Modal body -->
-                <div class="p-6 space-y-6">
-                    <div class="grid grid-cols-6 gap-6">
-                        <div class="col-span-6 sm:col-span-3">
-                            <label for="first-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
-                            <input type="text" name="first-name" id="first-name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Bonnie" required="">
-                        </div>
-                        <div class="col-span-6 sm:col-span-3">
-                            <label for="last-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
-                            <input type="text" name="last-name" id="last-name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Green" required="">
-                        </div>
-                        <div class="col-span-6 sm:col-span-3">
-                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                            <input type="email" name="email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="example@company.com" required="">
-                        </div>
-                        <div class="col-span-6 sm:col-span-3">
-                            <label for="phone-number" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
-                            <input type="number" name="phone-number" id="phone-number" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g. +(12)3456 789" required="">
-                        </div>
-                        <div class="col-span-6 sm:col-span-3">
-                            <label for="department" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department</label>
-                            <input type="text" name="department" id="department" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Development" required="">
-                        </div>
-                        <div class="col-span-6 sm:col-span-3">
-                            <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company</label>
-                            <input type="number" name="company" id="company" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="123456" required="">
-                        </div>
-                        <div class="col-span-6 sm:col-span-3">
-                            <label for="current-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Current Password</label>
-                            <input type="password" name="current-password" id="current-password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="••••••••" required="">
-                        </div>
-                        <div class="col-span-6 sm:col-span-3">
-                            <label for="new-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New Password</label>
-                            <input type="password" name="new-password" id="new-password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="••••••••" required="">
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal footer -->
+                
                 <div class="flex items-center p-6 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b dark:border-gray-600">
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save all</button>
                 </div>
@@ -345,3 +308,5 @@ class="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-50
 
 
 </section>
+
+
