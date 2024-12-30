@@ -125,12 +125,17 @@
       <div class="relative flex-1">
         <input class="input-inset h-10 pr-10" type="text" placeholder="Rechercher" />
       </div>
-      <div class="filter h-10 w-10 bg-slate-200 rounded-lg flex items-center justify-center transition-colors duration-300 hover:bg-slate-300 cursor-pointer">
+      <!-- <div class="filter h-10 w-10 bg-slate-200 rounded-lg flex items-center justify-center transition-colors duration-300 hover:bg-slate-300 cursor-pointer">
+        <i class="fa-solid fa-file-export" style="color: #a1a1aa;"></i>
+      </div> -->
+      <div (click)="exportSelectedData()" class="filter h-10 w-10 bg-slate-200 rounded-lg flex items-center justify-center transition-colors duration-300 hover:bg-slate-300 cursor-pointer">
         <i class="fa-solid fa-file-export" style="color: #a1a1aa;"></i>
       </div>
+      <a routerLink="/add-young"> 
       <div class="filter h-10 w-10 bg-slate-200 rounded-lg flex items-center justify-center transition-colors duration-300 hover:bg-slate-300 cursor-pointer">
-       <a routerLink="/add-young" > <i class="fa-solid fa-user-plus " style="color: #a1a1aa;" ></i></a>
+       <i class="fa-solid fa-user-plus " style="color: #a1a1aa;" ></i>
       </div>
+    </a>
     </div>
   </div>
 
@@ -143,12 +148,21 @@
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-                <!-- <th scope="col" class="p-4">
-                    <div class="flex items-center">
+                <th scope="col" class="p-4">
+                    <!-- <div class="flex items-center">
                         <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                    </div> -->
+                    <div class="flex items-center">
+                      <input 
+                        id="checkbox-all-search" 
+                        type="checkbox" 
+                        [checked]="selectAll"
+                        (change)="toggleSelectAll()"
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                      <label for="checkbox-all-search" class="sr-only">checkbox</label>
                     </div>
-                </th> -->
+                </th>
                 <th scope="col" class="px-6 py-3">
                     Nom
                 </th>
@@ -170,12 +184,20 @@
          
           
             <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600"  *ngFor="let young of paginatedYoungs" >
-                <!-- <td class="w-4 p-4">
-                    <div class="flex items-center">
+                <td class="w-4 p-4">
+                    <!-- <div class="flex items-center">
                         <input id="checkbox-table-search-3" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         <label for="checkbox-table-search-3" class="sr-only">checkbox</label>
+                    </div> -->
+                    <div class="flex items-center">
+                      <input 
+                        type="checkbox" 
+                        [checked]="isSelected(young.id)"
+                        (change)="toggleSelection(young.id)"
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                      <label class="sr-only">checkbox</label>
                     </div>
-                </td> -->
+                </td>
                 <th scope="row" class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <!-- <img class="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-4.jpg" alt="Jese image"> -->
                     <div class="ps-3">

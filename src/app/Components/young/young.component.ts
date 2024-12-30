@@ -25,6 +25,10 @@ export class YoungComponent implements OnInit {
   communes: string[] = [];
   protected Math = Math;
 
+  selectedYoungs: Set<number> = new Set(); // Pour stocker les IDs des jeunes sélectionnés
+  selectAll: boolean = false;
+
+
   // Pagination properties
   currentPage: number = 1;
   pageSize: number = 10;
@@ -45,6 +49,8 @@ export class YoungComponent implements OnInit {
     this.filtered.valueChanges.subscribe(() => {
       this.currentPage = 1; // Reset to first page when filters change
       this.filterYoungs();
+      this.selectedYoungs.clear(); // Réinitialiser les sélections lors du filtrage
+      this.selectedYoungs.clear(); // Réinitialiser les sélections lors du filtrage
     });
   }
 
@@ -124,4 +130,78 @@ export class YoungComponent implements OnInit {
       }
     );
   }
+
+
+  //Methode pour l'exportation du tableaux
+  // Méthodes de gestion des sélections
+  toggleSelection(youngId: number) {
+    if (this.selectedYoungs.has(youngId)) {
+      this.selectedYoungs.delete(youngId);
+    } else {
+      this.selectedYoungs.add(youngId);
+    }
+    this.updateSelectAllStatus();
+  }
+
+  toggleSelectAll() {
+    this.selectAll = !this.selectAll;
+    if (this.selectAll) {
+      this.paginatedYoungs.forEach(young => this.selectedYoungs.add(young.id));
+    } else {
+      this.selectedYoungs.clear();
+    }
+  }
+
+  updateSelectAllStatus() {
+    this.selectAll = this.paginatedYoungs.every(young => this.selectedYoungs.has(young.id));
+  }
+
+  isSelected(youngId: number): boolean {
+    return this.selectedYoungs.has(youngId);
+  }
+
+  // Méthode d'export
+  exportSelectedData() {
+    if (this.selectedYoungs.size === 0) {
+      alert('Veuillez sélectionner au moins une ligne à exporter');
+      return;
+    }
+
+    const selectedData = this.filteredYoungs.filter(young => this.selectedYoungs.has(young.id));
+    const csvData = this.convertToCSV(selectedData);
+    this.downloadCSV(csvData);
+  }
+
+  private convertToCSV(data: any[]): string {
+    const headers = ['Nom', 'Prénom', 'NCI', 'Téléphone', 'Région', 'Département', 'Commune'];
+    const rows = data.map(young => [
+      young.last_name,
+      young.first_name,
+      young.id_card_number,
+      young.phone,
+      young.address?.region || '',
+      young.address?.department || '',
+      young.address?.commune || ''
+    ]);
+
+    return [
+      headers.join(','),
+      ...rows.map(row => row.join(','))
+    ].join('\n');
+  }
+
+  private downloadCSV(csvContent: string) {
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', `export_recensement_${new Date().toISOString()}.csv`);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
 }

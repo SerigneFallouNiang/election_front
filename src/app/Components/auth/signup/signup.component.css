@@ -1,0 +1,120 @@
+
+.formulaire {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.text-connexion {
+    font-size: 2rem;
+    color: #2c3e50;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.text-connexion:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    border-radius: 2px;
+}
+
+.form-label {
+    color: #34495e;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    border: 2px solid #edf2f7;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    background-color: #f8fafc;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    background-color: white;
+}
+
+.input-group .btn-outline-secondary {
+    border: 2px solid #edf2f7;
+    color: #64748b;
+}
+
+.input-group .btn-outline-secondary:hover {
+    background-color: #f8fafc;
+    color: #3498db;
+}
+
+.btn-custom {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+.text-danger {
+    color: #e74c3c;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+.nouveauCompte {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.nouveauCompte a {
+    color: #3498db;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nouveauCompte a:hover {
+    color: #2980b9;
+}
+
+h4 {
+    color: #2c3e50;
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-top: 1.5rem;
+}
+
+.alert-danger {
+    background-color: #fef2f2;
+    border: 1px solid #fee2e2;
+    color: #ef4444;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 640px) {
+    .formulaire {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+}
