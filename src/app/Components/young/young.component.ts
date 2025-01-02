@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import galsenify from 'galsenify';
 import { apiUrlStockage } from '../../Services/apiUrlStockage';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-young',
@@ -167,12 +169,48 @@ export class YoungComponent implements OnInit {
       return;
     }
 
+    // const selectedData = this.filteredYoungs.filter(young => this.selectedYoungs.has(young.id));
+    // const csvData = this.convertToCSV(selectedData);
+    // this.downloadCSV(csvData);
     const selectedData = this.filteredYoungs.filter(young => this.selectedYoungs.has(young.id));
-    const csvData = this.convertToCSV(selectedData);
-    this.downloadCSV(csvData);
+    this.generatePDF(selectedData);
   }
+  
 
-  private convertToCSV(data: any[]): string {
+  // private convertToCSV(data: any[]): string {
+  //   const headers = ['Nom', 'Prénom', 'NCI', 'Téléphone', 'Région', 'Département', 'Commune'];
+  //   const rows = data.map(young => [
+  //     young.last_name,
+  //     young.first_name,
+  //     young.id_card_number,
+  //     young.phone,
+  //     young.address?.region || '',
+  //     young.address?.department || '',
+  //     young.address?.commune || ''
+  //   ]);
+
+  //   return [
+  //     headers.join(','),
+  //     ...rows.map(row => row.join(','))
+  //   ].join('\n');
+  // }
+
+  // private downloadCSV(csvContent: string) {
+  //   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  //   const link = document.createElement('a');
+  //   const url = URL.createObjectURL(blob);
+    
+  //   link.setAttribute('href', url);
+  //   link.setAttribute('download', `export_recensement_${new Date().toISOString()}.csv`);
+  //   link.style.visibility = 'hidden';
+    
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  // }
+
+  private generatePDF(data: any[]) {
+    const doc = new jsPDF();
     const headers = ['Nom', 'Prénom', 'NCI', 'Téléphone', 'Région', 'Département', 'Commune'];
     const rows = data.map(young => [
       young.last_name,
@@ -183,25 +221,20 @@ export class YoungComponent implements OnInit {
       young.address?.department || '',
       young.address?.commune || ''
     ]);
+  
+    // Ajout du titre
+    doc.text('Exportation des données des jeunes', 14, 10);
+  
+    // Ajout du tableau
+    autoTable(doc, {
+      head: [headers],
+      body: rows,
+      startY: 20,
+    });
+  
+    // Télécharger le PDF
+    doc.save(`export_recensement_${new Date().toISOString()}.pdf`);
+  
 
-    return [
-      headers.join(','),
-      ...rows.map(row => row.join(','))
-    ].join('\n');
-  }
-
-  private downloadCSV(csvContent: string) {
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    
-    link.setAttribute('href', url);
-    link.setAttribute('download', `export_recensement_${new Date().toISOString()}.csv`);
-    link.style.visibility = 'hidden';
-    
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
+}
 }
